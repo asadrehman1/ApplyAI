@@ -5,9 +5,5 @@ export const metadata: Metadata = {
   title: "Design Your Resume",
 };
 export default function Page() {
-  return (
-    <main>
-      <ResumeEditor />
-    </main>
-  );
+  return <ResumeEditor />;
 }
