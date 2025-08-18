@@ -8,11 +8,17 @@ import { useState } from "react";
 import { ResumeValues } from "@/lib/validation";
 import ResumePreviewSection from "./ResumePreviewSection";
 import { cn } from "@/lib/utils";
+import useUnloadWarning from "@/hooks/useUnloadWarning";
+import useAutoSaveResume from "./useAutoSaveResume";
 
 export default function ResumeEditor() {
   const searchParams = useSearchParams();
   const [resumeData, setResumeData] = useState<ResumeValues>({});
   const [showSmResumePreview, setShowSmResumePreview] = useState(false);
+
+  const { isSaving, hasUnsavedChanges } = useAutoSaveResume(resumeData);
+
+  useUnloadWarning(hasUnsavedChanges);
 
   const currentStep = searchParams.get("step") || steps[0].key;
 
@@ -33,7 +39,7 @@ export default function ResumeEditor() {
         <p className="text-sm text-muted-foreground">
           Follow the steps below to create your resume. Your progress will be
           saved automatically.
-        </p> 
+        </p>
       </header>
       <main className="relative grow">
         <div className="absolute bottom-0 top-0 flex w-full">
@@ -64,6 +70,7 @@ export default function ResumeEditor() {
         setCurrentStep={setStep}
         showSmResumePreview={showSmResumePreview}
         setShowSmResumePreview={setShowSmResumePreview}
+        isSaving={isSaving}
       />
     </div>
   );
