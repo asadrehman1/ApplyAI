@@ -1,10 +1,22 @@
 "use server";
 
-import { generateSummarySchema, GenerateSummaryValues } from "@/lib/validation";
+import {
+  generateSummarySchema,
+  GenerateSummaryInput,
+  GenerateWorkExperienceInput,
+  generateWorkExperienceSchema,
+  WorkExperience,
+} from "@/lib/validation";
 import AI from "@/lib/ai";
+import { auth } from "@clerk/nextjs/server";
 
-export async function generateSummary(input: GenerateSummaryValues) {
+export async function generateSummary(input: GenerateSummaryInput) {
   //TODO: Block for non-preimum users
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
 
   const { jobTitle, workExperiences, educations, skills } =
     generateSummarySchema.parse(input);
@@ -36,25 +48,87 @@ export async function generateSummary(input: GenerateSummaryValues) {
     
     Skills:${skills} 
   `;
-  
+
   const response = await AI.chat.completions.create({
     model: "gemini-2.5-flash",
     messages: [
-    {
+      {
         role: "system",
-        content: systemMessage
-    },
-    {
+        content: systemMessage,
+      },
+      {
         role: "user",
         content: userMessage,
-    },
+      },
     ],
   });
 
   const aiResponse = response.choices[0].message.content;
 
-  if(!aiResponse){
+  if (!aiResponse) {
     throw new Error("Failed to generate AI response");
   }
   return aiResponse;
+}
+
+export async function generateWorkExperience(
+  input: GenerateWorkExperienceInput,
+) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  //   const subscriptionLevel = await getUserSubscriptionLevel(userId);
+
+  //   if (!canUseAITools(subscriptionLevel)) {
+  //     throw new Error("Upgrade your subscription to use this feature");
+  //   }
+
+  const { description } = generateWorkExperienceSchema.parse(input);
+
+  const systemMessage = `
+  You are a job resume generator AI. Your task is to generate a single work experience entry based on the user input.
+  Your response must adhere to the following structure. You can omit fields if they can't be inferred from the provided data, but don't add any new ones.
+
+  Job title: <job title>
+  Company: <company name>
+  Start date: <format: YYYY-MM-DD> (only if provided)
+  End date: <format: YYYY-MM-DD> (only if provided)
+  Description: <an optimized description in bullet format, might be inferred from the job title>
+  `;
+
+  const userMessage = `
+  Please provide a work experience entry from this description:
+  ${description}
+  `;
+
+  const completion = await AI.chat.completions.create({
+    model: "gemini-2.5-flash",
+    messages: [
+      {
+        role: "system",
+        content: systemMessage,
+      },
+      {
+        role: "user",
+        content: userMessage,
+      },
+    ],
+  });
+
+  const aiResponse = completion.choices[0].message.content;
+
+  if (!aiResponse) {
+    throw new Error("Failed to generate AI response");
+  }
+
+  return {
+    position: aiResponse.match(/Job title: (.*)/)?.[1] || "",
+    company: aiResponse.match(/Company: (.*)/)?.[1] || "",
+    description: (aiResponse.match(/Description:([\s\S]*)/)?.[1] || "").trim(),
+    startDate: aiResponse.match(/Start date: (\d{4}-\d{2}-\d{2})/)?.[1],
+    endDate: aiResponse.match(/End date: (\d{4}-\d{2}-\d{2})/)?.[1],
+  } satisfies WorkExperience;
 }

@@ -35,6 +35,7 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { cn } from "@/lib/utils";
+import GenerateWorkExperienceButton from "./GenerateWorkExperienceButton";
 
 export default function WorkExperienceForm({
   resumeData,
@@ -181,13 +182,13 @@ function WorkExperienceItem({
           {...listeners}
         />
       </div>
-      {/* <div className="flex justify-center">
+      <div className="flex justify-center">
         <GenerateWorkExperienceButton
           onWorkExperienceGenerated={(exp) =>
             form.setValue(`workExperiences.${index}`, exp)
           }
         />
-      </div> */}
+      </div>
       <FormField
         control={form.control}
         name={`workExperiences.${index}.position`}
