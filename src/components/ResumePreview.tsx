@@ -8,10 +8,12 @@ import { Badge } from "./ui/badge";
 import { BorderStyles } from "@/app/(main)/editor/BorderStyleButton";
 
 interface ResumePreviwProps {
+  contentRef?: React.Ref<HTMLDivElement>;
   resumeData: ResumeValues;
   className?: string;
 }
 export default function ResumePreviw({
+  contentRef,
   resumeData,
   className,
 }: ResumePreviwProps) {
@@ -26,6 +28,8 @@ export default function ResumePreviw({
       )}
     >
       <div
+        ref={contentRef}
+        id="resumePreviewContent"
         className={cn("space-y-6 p-6", !width && "invisible")}
         style={{
           zoom: (1 / 794) * width,
@@ -279,12 +283,12 @@ function SkillsSection({ resumeData }: ResumeSectionProps) {
               className="rounded-md bg-black text-white hover:bg-black"
               style={{
                 backgroundColor: colorHex,
-                  borderRadius:
-                    borderStyle === BorderStyles.SQUARE
-                      ? "0px"
-                      : borderStyle === BorderStyles.CIRCLE
-                        ? "9999px"
-                        : "8px",
+                borderRadius:
+                  borderStyle === BorderStyles.SQUARE
+                    ? "0px"
+                    : borderStyle === BorderStyles.CIRCLE
+                      ? "9999px"
+                      : "8px",
               }}
             >
               {skill}
