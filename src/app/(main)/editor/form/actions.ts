@@ -9,13 +9,20 @@ import {
 } from "@/lib/validation";
 import AI from "@/lib/ai";
 import { auth } from "@clerk/nextjs/server";
+import { getUserSubscriptionLevel } from "@/lib/subscription";
+import { canUseAITools } from "@/lib/permissions";
 
 export async function generateSummary(input: GenerateSummaryInput) {
-  //TODO: Block for non-preimum users
   const { userId } = await auth();
 
   if (!userId) {
     throw new Error("Unauthorized");
+  }
+
+  const subscriptionLevel = await getUserSubscriptionLevel(userId);
+
+  if (!canUseAITools(subscriptionLevel)) {
+    throw new Error("Upgrade your subscription to use this feature.");
   }
 
   const { jobTitle, workExperiences, educations, skills } =
@@ -80,11 +87,11 @@ export async function generateWorkExperience(
     throw new Error("Unauthorized");
   }
 
-  //   const subscriptionLevel = await getUserSubscriptionLevel(userId);
+  const subscriptionLevel = await getUserSubscriptionLevel(userId);
 
-  //   if (!canUseAITools(subscriptionLevel)) {
-  //     throw new Error("Upgrade your subscription to use this feature");
-  //   }
+  if (!canUseAITools(subscriptionLevel)) {
+    throw new Error("Upgrade your subscription to use this feature.");
+  }
 
   const { description } = generateWorkExperienceSchema.parse(input);
 
