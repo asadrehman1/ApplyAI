@@ -12,6 +12,7 @@ Generate professional resumes in minutes using AI with **Stripe subscriptions**,
 - **Drag & Drop**: Reorder experiences and education using **dnd-kit**, reflected in real time on the resume.  
 - **Multiple Subscription Plans**: Three subscription tiers controlling access to features via Stripe.  
 - **Stripe Webhooks**: Integrated to handle subscription events in real time.  
+- **Environment Management**: Managed using **@t3-oss/env-nextjs** for secure and easy access to environment variables.  
 - **Customizations**: Change colors of headings, borders of images, and skill sections.  
 - **Light, Dark & System Modes**: Switch between themes seamlessly.  
 - **Autosave with Debounce**: Automatic saving of forms and warning on page reload.  
