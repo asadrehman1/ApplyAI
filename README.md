@@ -48,54 +48,6 @@ Generate professional resumes in minutes using AI with **Stripe subscriptions**,
 
 ---
 
-## 📦 Environment Variables
-
-Create a `.env` file and add the following:
-
-```env
-DATABASE_URL=postgresql://neondb_owner:npg_BqyXk06E...
-
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_cm9...
-CLERK_SECRET_KEY=sk_test_2Drp...
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/
-NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/
-
-BLOB_READ_WRITE_TOKEN="vercel_blob_rw_IP..."
-GOOGLE_AI_API_KEY=AIzaSyAe...
-
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_51RyU5v...
-STRIPE_SECRET_KEY=sk_test_51RyU5v...
-NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTHLY=price_1Ryb...
-NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_PLUS_MONTHLY=price_1Ryb...
-STRIPE_WEBHOOK_SECRET=whsec_bXR...
-
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
-```
-
-> **Note:** Replace these with your own credentials in production.
-
----
-
-## 💻 Setup & Run Locally
-
-```bash
-# Clone the repository
-git clone https://github.com/asadrehman1/ApplyAI.git
-cd applyai
-
-# Install dependencies
-npm install
-
-# Run the development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view in your browser.
-
----
-
 ## 📈 How It Works
 
 1. **Sign Up / Sign In** with Clerk authentication.  
