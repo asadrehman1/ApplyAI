@@ -3,6 +3,10 @@
 **AI Powered Resume Builder SaaS built with Next.js**  
 Generate professional resumes in minutes using AI with **Stripe subscriptions**, **Clerk authentication**, and a highly interactive, real time experience.
 
+![ApplyAI Preview](./public/applyai-preview-1.png)
+
+![ApplyAI Preview Payment](./public/applyai-preview-2.png)
+
 ---
 
 ## 🚀 Features
